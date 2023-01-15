@@ -6,35 +6,39 @@ import { COLORS } from '../../constants';
 import VisuallyHidden from '../VisuallyHidden';
 
 const STYLES = {
-  'large': {
-    '--height': '24px',
-    '--padding': '4px'
+  'small': {
+    '--height': '8px',
+    '--padding': '0',
+    '--radius': '4px'
   },
   'medium': {
     '--height': '12px',
-    '--padding': '0'
+    '--padding': '0',
+    '--radius': '4px'
   },
-  'small': {
-    '--height': '8px',
-    '--padding': '0'
+  'large': {
+    '--height': '24px',
+    '--padding': '4px',
+    '--radius': '8px'
   }
 }
 
-const ProgressBarWrapper = styled.div`
+const Wrapper = styled.div`
   height: var(--height);
   padding: var(--padding);
+  background-color: ${COLORS.transparentGray15};
   box-shadow: inset 0px 2px 4px ${COLORS.transparentGray35};
-  border-radius: 4px;
+  border-radius: var(--radius);
 `;
 
-const ProgressBarContentWrapper = styled.div`
+const BarWrapper = styled.div`
   width: 100%;
   height: 100%;
   border-radius: 4px;
   overflow: clip;
 `;
 
-const ProgressBarContent = styled.div`
+const Bar = styled.div`
   width: ${p => p.value}%;
   height: 100%;
   background-color: ${COLORS.primary};
@@ -42,12 +46,17 @@ const ProgressBarContent = styled.div`
 
 const ProgressBar = ({ value, size }) => {
   const style = STYLES[size];
+
+  if (!style) {
+    throw new Error(`Unknown size for progress bar: ${size}`);
+  }
+
   return (
-    <ProgressBarWrapper role="progressbar" aria-valuenow={value} style={style}>
-      <ProgressBarContentWrapper>
-        <ProgressBarContent value={value} />
-      </ProgressBarContentWrapper>
-    </ProgressBarWrapper>
+    <Wrapper role="progressbar" aria-valuenow={value} style={style}>
+      <BarWrapper>
+        <Bar value={value} />
+      </BarWrapper>
+    </Wrapper>
   );
 };
 
