@@ -9,42 +9,46 @@ import VisuallyHidden from '../VisuallyHidden';
 const STYLES = {
   small: {
     '--border': '1px',
-    '--font-size': `${14 / 16}rem`
+    '--font-size': `${14 / 16}rem`,
+    '--padding': '24px'
   },
   large: {
     '--border': '2px',
-    '--font-size': `${18 / 16}rem`
+    '--font-size': `${18 / 16}rem`,
+    '--padding': '36px'
   }
 }
 
-const Wrapper = styled.div`
-  border-bottom: var(--border) solid ${COLORS.black};
-  width: ${p => p.width}px;
+const InputLabel = styled.label`
+  display: block;
+  position: relative;
   color: ${COLORS.gray700};
 
   &:hover {
-    color: ${COLORS.black}
+    color: ${COLORS.black};
   }
 `;
 
-const InputLabel = styled.label`
-  display: inline-block;
-  vertical-align: middle;
-  padding-block-end: 4px;
+const InputIcon = styled(Icon)`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 4px;
+  margin-block: auto;
+  height: fit-content;
 `;
 
-const InputWrapper = styled.div`
-  display: inline-block;
-  margin-inline-start: 8px;
-  padding-block: 4px;
-`
-
 const Input = styled.input`
-  width: 100%;
+  width: ${p => p.width}px;
   border: none;
   color: inherit;
   font-size: var(--font-size);
   font-weight: 700;
+  padding-block: 4px;
+  padding-inline-start: var(--padding);
+  padding-inline-end: 0;
+  outline-offset: 2px;
+  border-bottom: var(--border) solid ${COLORS.black};
 
   &::placeholder {
     color: ${COLORS.gray500};
@@ -57,7 +61,7 @@ const IconInput = ({
   icon,
   width = 250,
   size,
-  placeholder,
+  ...delegated
 }) => {
   const style = STYLES[size];
   
@@ -65,19 +69,15 @@ const IconInput = ({
     throw new Error(`Unknown size for icon input: ${size}`);
   }
 
-  const iconSize = size === 'small' ? 16 : 18;
+  const iconSize = size === 'small' ? 16 : 24;
   const iconStrokeWidth = size === 'small' ? 1 : 2;
 
   return (
-    <Wrapper width={width} style={style}>
-      <InputLabel for="icon-input">
-        <Icon id={icon} size={iconSize} strokeWidth={iconStrokeWidth} />
-        <VisuallyHidden>{label}</VisuallyHidden>
-      </InputLabel>
-      <InputWrapper>
-        <Input id="icon-input" type="text" placeholder={placeholder} />
-      </InputWrapper>
-    </Wrapper>
+    <InputLabel>
+      <VisuallyHidden>{label}</VisuallyHidden>
+      <InputIcon id={icon} size={iconSize} strokeWidth={iconStrokeWidth} />
+      <Input type="text" width={width} style={style} {...delegated} />
+    </InputLabel>
   );
 };
 
