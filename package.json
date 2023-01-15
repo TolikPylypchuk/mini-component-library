@@ -2,6 +2,7 @@
   "name": "mini-component-library",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://components.workshop.tolik.io",
   "dependencies": {
     "babel-loader": "8.2.2",
     "babel-plugin-styled-components": "1.12.0",
