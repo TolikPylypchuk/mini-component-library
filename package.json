@@ -12,7 +12,10 @@
     "styled-components": "5.2.1"
   },
   "scripts": {
-    "start": "start-storybook -p 6006 -s public"
+    "start": "start-storybook -p 6006 -s public",
+    "build": "build-storybook",
+    "predeploy": "npm run build && cp CNAME ./storybook-static",
+    "deploy": "gh-pages -d storybook-static --message 'Deploy to GitHub Pages'"
   },
   "eslintConfig": {
     "extends": [
@@ -40,6 +43,7 @@
     "@storybook/node-logger": "6.5.15",
     "@storybook/preset-create-react-app": "3.1.7",
     "@storybook/react": "6.5.15",
+    "gh-pages": "^4.0.0",
     "webpack": "4.44.2"
   }
 }
