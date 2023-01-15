@@ -6,14 +6,9 @@ import Icon from '../Icon';
 import { getDisplayedValue } from './Select.helpers';
 
 const Wrapper = styled.div`
-  background-color: ${COLORS.transparentGray15};
-  width: fit-content;
-  border-radius: 8px;
-  color: ${COLORS.gray700};
   position: relative;
-  padding-block: 12px;
-  padding-inline-start: 18px;
-  padding-inline-end: 54px;
+  width: fit-content;
+  isolation: isolate;
 `;
 
 const InvisibleSelect = styled.select`
@@ -21,17 +16,36 @@ const InvisibleSelect = styled.select`
   width: 100%;
   height: 100%;
   position: absolute;
-  margin: -12px -18px;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  appearance: none;
+`;
+
+const Presentation = styled.div`
+  background-color: ${COLORS.transparentGray15};
+  color: ${COLORS.gray700};
+  border-radius: 8px;
+  padding-block: 12px;
+  padding-inline-start: 18px;
+  padding-inline-end: 52px;
+
+  ${InvisibleSelect}:focus + & {
+    outline: auto;
+  }
+
+  ${InvisibleSelect}:hover + & {
+    color: ${COLORS.black};
+  }
 `;
 
 const IconWrapper = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-  right: 12px;
+  right: 10px;
   height: fit-content;
   margin-block: auto;
-  margin-inline-start: 18px;
 `;
 
 const Select = ({ label, value, onChange, children }) => {
@@ -42,10 +56,12 @@ const Select = ({ label, value, onChange, children }) => {
       <InvisibleSelect value={value} onChange={onChange} aria-label={label}>
         {children}
       </InvisibleSelect>
-      <div>{displayedValue}</div>
-      <IconWrapper>
-        <Icon id="chevron-down" size="24" strokeWidth="2" />
-      </IconWrapper>
+      <Presentation>
+        {displayedValue}
+        <IconWrapper>
+          <Icon id="chevron-down" size={24} strokeWidth={2} />
+        </IconWrapper>
+      </Presentation>
     </Wrapper>
   );
 };
